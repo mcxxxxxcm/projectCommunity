@@ -159,6 +159,22 @@ const products = ref([
     category: '美妆个护',
     image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
   },
+  {
+    id: 7,
+    name: '洗发水',
+    description: '温和洗发水，适合各种肤质',
+    points: 1000,
+    category: '美妆个护',
+    image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
+  },
+  {
+    id: 7,
+    name: '洗发水',
+    description: '温和洗发水，适合各种肤质',
+    points: 1000,
+    category: '美妆个护',
+    image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
+  },
   // 添加更多商品...
 ]);
 
