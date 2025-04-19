@@ -16,6 +16,13 @@
         <button class="nav-item" @click="goToPage('/PCPage')">
           <span>首页</span>
         </button>
+        <button class="nav-item" @click="showUsageGuide">
+          <span>使用指南</span>
+        </button>
+        <!-- 添加我的按钮 -->
+        <button class="nav-item" @click="goToPage('/mine')">
+          <span>我的</span>
+        </button>
       </nav>
       <div class="user-points">
         <span class="points-icon">🪙</span>
@@ -77,6 +84,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ElMessage } from 'element-plus';
 
 const router = useRouter();
 const points = ref(5000);
@@ -122,58 +130,34 @@ const products = ref([
   },
   {
     id: 5,
-    name: '洗发水',
-    description: '温和洗发水，适合各种肤质',
+    name: '恒温热水壶',
+    description: '高效保温，口感美味',
     points: 1000,
-    category: '美妆个护',
-    image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
+    category: '家居用品',
+    image: 'https://img1.baidu.com/it/u=2511096713,367825848&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
   },
   {
     id: 6,
-    name: '大米5kg',
-    description: '美味大米，营养丰富',
-    points: 2000,
-    category: '食品饮料',
-    image: 'https://img1.baidu.com/it/u=642835663,1856589659&fm=253&fmt=auto&app=120&f=JPEG?w=380&h=380'
-  },
-  {
-    id: 7,
     name: '洗发水',
     description: '温和洗发水，适合各种肤质',
     points: 1000,
     category: '美妆个护',
     image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
+  },
+  {
+    id: 7,
+    name: '进口猕猴桃',
+    description: '新鲜猕猴桃，口感香甜',
+    points: 500,
+    category: '食品饮料',
+    image: 'https://img1.baidu.com/it/u=3505855416,4025288674&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
   },{
-    id: 6,
-    name: '大米5kg',
-    description: '美味大米，营养丰富',
-    points: 2000,
-    category: '食品饮料',
-    image: 'https://img1.baidu.com/it/u=642835663,1856589659&fm=253&fmt=auto&app=120&f=JPEG?w=380&h=380'
-  },
-  {
-    id: 7,
-    name: '洗发水',
-    description: '温和洗发水，适合各种肤质',
-    points: 1000,
-    category: '美妆个护',
-    image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
-  },
-  {
-    id: 7,
-    name: '洗发水',
-    description: '温和洗发水，适合各种肤质',
-    points: 1000,
-    category: '美妆个护',
-    image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
-  },
-  {
-    id: 7,
-    name: '洗发水',
-    description: '温和洗发水，适合各种肤质',
-    points: 1000,
-    category: '美妆个护',
-    image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
+    id: 8,
+    name: '后续商品等待更新',
+    description: '后续商品等待更新',
+    points: 0,
+    category: '后续商品等待更新',
+    image: 'https://img2.baidu.com/it/u=1354102007,2279597334&fm=253&fmt=auto&app=120&f=JPEG?w=380&h=380'
   },
   // 添加更多商品...
 ]);
@@ -213,6 +197,16 @@ const scrollToTop = () => {
   window.scrollTo({
     top: 0,
     behavior: 'smooth'
+  });
+};
+
+// 定义显示使用指南的函数
+const showUsageGuide = () => {
+  ElMessage({
+    message: '获取积分的途径：每日签到、参与活动 (详情见：我的->获取积分)',
+    type: 'info',
+    duration: 5000,
+    showClose: true
   });
 };
 

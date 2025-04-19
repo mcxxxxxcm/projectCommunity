@@ -60,6 +60,11 @@ const routes = [
     path: '/LostAndFound-PC',
     name: 'lostAndFoundPC',
     component: LostAndFoundPC
+  },
+  {
+    path: '/mine',
+    name: 'Mine',
+    component: () => import('../views/mine.vue')
   }
 ]
 
