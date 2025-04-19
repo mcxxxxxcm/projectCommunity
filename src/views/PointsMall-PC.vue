@@ -203,7 +203,7 @@ const scrollToTop = () => {
 // 定义显示使用指南的函数
 const showUsageGuide = () => {
   ElMessage({
-    message: '获取积分的途径：每日签到、参与活动 (详情见：我的->获取积分)',
+    message: '获取积分的途径：每日签到、参与活动 (详情见：我的)',
     type: 'info',
     duration: 5000,
     showClose: true

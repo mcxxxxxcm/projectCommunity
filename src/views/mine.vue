@@ -44,11 +44,12 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../stores/auth'; // 引入Pinia store
+import { useAuthStore } from '../stores/auth';
+import { ElMessageBox } from 'element-plus';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const points = ref(5000); // 从全局状态获取
+const points = ref(5000);
 
 const goBack = () => {
   router.go(-1);
@@ -59,9 +60,25 @@ const goToPage = (path) => {
 };
 
 const logout = () => {
-  // 登出逻辑
-  alert('已退出登录');
-  router.push('/');
+  ElMessageBox.confirm(
+    '确定要退出登录吗？',
+    '退出登录',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+      center: true
+    }
+  ).then(() => {
+    authStore.logout();
+    router.push('/');
+    ElMessageBox.alert('已成功退出登录', '提示', {
+      confirmButtonText: '确定',
+      type: 'success'
+    });
+  }).catch(() => {
+    // 用户点击了取消
+  });
 };
 </script>
 
@@ -125,6 +142,12 @@ const logout = () => {
 
 .function-item:last-child {
   border-bottom: none;
+  color: #ff4d4f; /* 退出登录文字颜色改为红色 */
+}
+
+.function-item:last-child:hover {
+  background-color: rgba(255, 77, 79, 0.1); /* 透明红色背景 */
+  color: #ff4d4f;
 }
 
 .function-item:hover {

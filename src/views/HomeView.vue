@@ -1,36 +1,39 @@
 <template>
   <div class="home">
-    <h1 class="title">社区服务平台</h1>
-    
-    <!-- 登录表单 -->
-    <div class="login-form" v-if="!isLoggedIn">
-      <div class="form-group">
-        <label for="username">用户名</label>
-        <input 
-          type="text" 
-          id="username" 
-          v-model="username" 
-          placeholder="请输入用户名"
-        >
+    <div class="background-overlay"></div>
+    <div class="content">
+      <h1 class="title">社区服务平台</h1>
+      
+      <!-- 登录表单 -->
+      <div class="login-form" v-if="!isLoggedIn">
+        <div class="form-group">
+          <label for="username">用户名</label>
+          <input 
+            type="text" 
+            id="username" 
+            v-model="username" 
+            placeholder="请输入用户名"
+          >
+        </div>
+        <div class="form-group">
+          <label for="password">密码</label>
+          <input 
+            type="password" 
+            id="password" 
+            v-model="password" 
+            placeholder="请输入密码"
+          >
+        </div>
+        <button class="login-btn" @click="handleLogin">登录</button>
       </div>
-      <div class="form-group">
-        <label for="password">密码</label>
-        <input 
-          type="password" 
-          id="password" 
-          v-model="password" 
-          placeholder="请输入密码"
-        >
-      </div>
-      <button class="login-btn" @click="handleLogin">登录</button>
-    </div>
 
-    <!-- 登录后的导航按钮 -->
-    <div class="nav-buttons" v-else>
-      <button class="nav-button" @click="goToPage('pc')">
-        <span class="icon">💻</span>
-        <span>进入PC端首页</span>
-      </button>
+      <!-- 登录后的导航按钮 -->
+      <div class="nav-buttons" v-else>
+        <button class="nav-button" @click="goToPage('pc')">
+          <span class="icon">💻</span>
+          <span>进入PC端首页</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -61,28 +64,56 @@ const goToPage = (type) => {
 
 <style scoped>
 .home {
+  position: fixed; /* 改为fixed定位 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; /* 完全覆盖视口 */
+  overflow: hidden;
+  background: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center;
+  background-size: cover;
+}
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0; /* 内容也完全覆盖 */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 0;
 }
 
 .title {
-  color: #2c3e50;
+  color: white;
   margin-bottom: 2rem;
   font-size: 2.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  width: 300px;
-  padding: 2rem;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
 }
 
 .form-group {

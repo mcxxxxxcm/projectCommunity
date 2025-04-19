@@ -21,6 +21,8 @@
         <button class="nav-item" @click="goToPage('/Privacy-PC')">隐私管理</button>
         <button class="nav-item" @click="goToPage('/Complaint-PC')">投诉建议</button>
         <button class="nav-item" @click="goToPage('/LostAndFound-PC')">寻物启事</button>
+        <!-- 添加我的按钮 -->
+        <button class="nav-item" @click="goToPage('/mine')">我的</button>
       </nav>
       <button class="mobile-switch" @click="goToMobile">
         <span class="icon">📱</span>
@@ -32,8 +34,16 @@
     <main class="main-content">
       <!-- Banner区域 -->
       <section class="banner">
-        <h1>欢迎来到社区服务平台</h1>
-        <p>为您提供便捷的社区生活服务</p>
+        <!-- 修改后的Banner区域 -->
+        <el-carousel :interval="3000" height="400px">
+          <el-carousel-item v-for="(image, index) in bannerImages" :key="index">
+            <img :src="image.url" :alt="image.alt" class="banner-image">
+            <div class="banner-text">
+              <h1>{{ image.title }}</h1>
+              <p>{{ image.desc }}</p>
+            </div>
+          </el-carousel-item>
+        </el-carousel>
       </section>
 
       <!-- 内容区域 -->
@@ -65,23 +75,21 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 import { ref, onMounted, onUnmounted } from 'vue';
+import { ElCarousel, ElCarouselItem } from 'element-plus';
 
 const router = useRouter();
-const isHeaderVisible = ref(true);
-const lastScrollPosition = ref(0);
-
-const services = ref([
-  { name: '积分商城', desc: '用积分兑换精美礼品', icon: '🛒', path: '/PointsMall-PC' },
-  { name: '儿童托管', desc: '专业的儿童照看服务', icon: '👶', path: '/ChildCare-PC' },
-  { name: '水电缴费', desc: '便捷的公共事业缴费', icon: '💧', path: '/Utilities-PC' },
-  { name: '社区跑腿', desc: '邻里互助跑腿服务', icon: '🏃', path: '/CommunityErrands-PC' },
-  { name: '隐私管理', desc: '管理您的隐私设置', icon: '🔒', path: '/Privacy-PC' },
-  { name: '投诉建议', desc: '提交您的投诉和建议', icon: '📢', path: '/Complaint-PC' },
-  { name: '寻物启事', desc: '发布和查看失物招领', icon: '🔍', path: '/LostAndFound-PC' }
-]);
+const authStore = useAuthStore();
+const isHeaderVisible = ref(true); // 添加缺失的响应式变量
+const lastScrollPosition = ref(0); // 添加缺失的响应式变量
 
 const goToPage = (path) => {
+  const protectedRoutes = ['/mine', '/PointsMall-PC'];
+  if (protectedRoutes.includes(path) && !authStore.isLoggedIn) {
+    router.push('/');
+    return;
+  }
   router.push(path);
 };
 
@@ -109,8 +117,48 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
 });
+
+// 添加服务列表数据
+const services = ref([
+  { name: '积分商城', desc: '用积分兑换精美礼品', icon: '🛒', path: '/PointsMall-PC' },
+  { name: '儿童托管', desc: '专业的儿童照看服务', icon: '👶', path: '/ChildCare-PC' },
+  { name: '水电缴费', desc: '便捷的公共事业缴费', icon: '💧', path: '/Utilities-PC' },
+  { name: '社区跑腿', desc: '邻里互助跑腿服务', icon: '🏃', path: '/CommunityErrands-PC' },
+  { name: '隐私管理', desc: '管理您的隐私设置', icon: '🔒', path: '/Privacy-PC' },
+  { name: '投诉建议', desc: '提交您的投诉和建议', icon: '📢', path: '/Complaint-PC' },
+  { name: '寻物启事', desc: '发布和查看失物招领', icon: '🔍', path: '/LostAndFound-PC' },
+  { name: '社区公告', desc: '查看最新社区通知', icon: '📢', path: '/Notice-PC' },
+  { name: '便民电话', desc: '常用服务联系电话', icon: '📞', path: '/Contact-PC' },
+  { name: '活动报名', desc: '参与社区活动', icon: '🎯', path: '/Activity-PC' },
+  { name: '物业报修', desc: '在线提交维修申请', icon: '🔧', path: '/Repair-PC' },
+  { name: '问卷调查', desc: '参与社区调查', icon: '📝', path: '/Survey-PC' }
+]);
+
+// 添加轮播图数据（合并到主script中）
+const bannerImages = ref([
+  {
+    url: '../images/4969e1e07de6867e793ed56ce591c693.jpeg', // 社区服务场景
+    alt: '社区服务',
+    title: '温馨社区 服务到家',
+    desc: '全方位社区生活服务'
+  },
+  {
+    url: 'https://img95.699pic.com/photo/50136/1348.jpg_wh860.jpg', // 便民活动场景
+    alt: '便民服务', 
+    title: '便民服务一站式',
+    desc: '让生活更便捷'
+  },
+  {
+    url: 'https://img95.699pic.com/photo/50136/1349.jpg_wh860.jpg', // 社区活动场景
+    alt: '社区活动',
+    title: '丰富社区活动',
+    desc: '共建和谐邻里关系'
+  }
+]);
+
 </script>
 
+<!-- 删除重复的<style>标签，保留一个 -->
 <style scoped>
 .pc-layout {
   display: flex;
@@ -320,5 +368,32 @@ onUnmounted(() => {
 /* 调整main-content的margin-top */
 .main-content {
   margin-top: 80px;
+}
+/* 修改banner样式 */
+.banner {
+  margin-top: 0;
+  padding: 0 !important;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+  width: 80%;
+  z-index: 1;
+}
+
+.el-carousel {
+  width: 100%;
 }
 </style>
