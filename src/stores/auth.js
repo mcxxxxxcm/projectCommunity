@@ -4,15 +4,15 @@ export const useAuthStore = defineStore('auth', {
   state: () => ({
     isLoggedIn: false,
     username: '',
-    points: parseInt(localStorage.getItem('points')) || 1000 // 默认1000积分
+    points: parseInt(localStorage.getItem('userPoints')) || 0 // 从localStorage初始化
   }),
   actions: {
     login(username) {
       this.username = username;
       this.isLoggedIn = true;
-      this.points = parseInt(localStorage.getItem('points')) || 0; // 读取积分
       localStorage.setItem('username', username);
       localStorage.setItem('isLoggedIn', 'true');
+      localStorage.setItem('userPoints', this.points); // 登录时保存积分
     },
     logout() {
       this.username = '';
@@ -20,11 +20,11 @@ export const useAuthStore = defineStore('auth', {
       this.points = 0;
       localStorage.removeItem('username');
       localStorage.removeItem('isLoggedIn');
-      localStorage.removeItem('points');
+      localStorage.removeItem('userPoints'); // 登出时清除积分
     },
     updatePoints(newPoints) {
       this.points = newPoints;
-      localStorage.setItem('points', newPoints); // 持久化积分
+      localStorage.setItem('userPoints', newPoints); // 更新积分时同步到localStorage
     }
   }
 })

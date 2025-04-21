@@ -82,19 +82,25 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { ElMessage } from 'element-plus';
+import { useAuthStore } from '../stores/auth';
 
 const router = useRouter();
-const points = ref(5000);
+const authStore = useAuthStore();
+
+// 状态管理
+const points = ref(parseInt(localStorage.getItem('userPoints')) || 1000);
 const activeCategory = ref('全部');
 const headerVisible = ref(true);
 const showBackToTop = ref(false);
 let lastScrollPosition = 0;
 
+// 商品分类
 const categories = ['全部', '家居用品', '数码电子', '食品饮料', '美妆个护'];
 
+// 商品数据
 const products = ref([
   {
     id: 1,
@@ -162,12 +168,14 @@ const products = ref([
   // 添加更多商品...
 ]);
 
+// 计算属性
 const filteredProducts = computed(() => {
   return activeCategory.value === '全部' 
     ? products.value 
     : products.value.filter(p => p.category === activeCategory.value);
 });
 
+// 方法
 const goToPage = (path) => {
   router.push(path);
 };
@@ -175,21 +183,17 @@ const goToPage = (path) => {
 const exchangeProduct = (product) => {
   if (points.value >= product.points) {
     points.value -= product.points;
-    alert(`成功兑换 ${product.name}!`);
+    authStore.updatePoints(points.value);
+    ElMessage.success(`成功兑换 ${product.name}!`);
   } else {
-    alert('积分不足，无法兑换');
+    ElMessage.error('积分不足，无法兑换');
   }
 };
 
 const handleScroll = () => {
   const currentScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
-  
-  // 控制导航栏显示/隐藏
   headerVisible.value = currentScrollPosition < lastScrollPosition || currentScrollPosition < 10;
-  
-  // 控制返回顶部按钮显示
   showBackToTop.value = currentScrollPosition > 300;
-  
   lastScrollPosition = currentScrollPosition;
 };
 
@@ -200,7 +204,6 @@ const scrollToTop = () => {
   });
 };
 
-// 定义显示使用指南的函数
 const showUsageGuide = () => {
   ElMessage({
     message: '获取积分的途径：每日签到、参与活动 (详情见：我的)',
@@ -210,12 +213,19 @@ const showUsageGuide = () => {
   });
 };
 
+// 生命周期钩子
 onMounted(() => {
   window.addEventListener('scroll', handleScroll);
 });
 
 onUnmounted(() => {
   window.removeEventListener('scroll', handleScroll);
+});
+
+// 监听积分变化
+watch(() => authStore.points, (newPoints) => {
+  points.value = newPoints;
+  localStorage.setItem('userPoints', newPoints);
 });
 </script>
 
@@ -402,8 +412,7 @@ onUnmounted(() => {
   max-height: 100%;
   object-fit: contain;
   border-radius: 4px;
-}
-.product-info {
+}.product-info {
   padding: 1rem;
   flex: 1;
   display: flex;

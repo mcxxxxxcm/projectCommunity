@@ -66,7 +66,7 @@ import { useAuthStore } from '../stores/auth';
 const router = useRouter();
 const authStore = useAuthStore();
 const currentTime = ref('');
-const userPoints = ref(authStore.points); // 初始化为authStore中的积分
+const userPoints = ref(parseInt(localStorage.getItem('userPoints')) || 0); // 从localStorage初始化
 
 // 时间更新函数
 const updateTime = () => {
@@ -95,6 +95,7 @@ const fetchUserPoints = async () => {
 // 监听用户积分变化
 watch(() => authStore.points, (newPoints) => {
   userPoints.value = newPoints;
+  localStorage.setItem('userPoints', newPoints); // 积分变化时更新localStorage
 });
 
 // 商品数据
