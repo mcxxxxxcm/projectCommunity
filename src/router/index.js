@@ -9,6 +9,7 @@ import CommunityErrandsPC from '../views/CommunityErrands-PC.vue'
 import PrivacyPC from '../views/Privacy-PC.vue'
 import ComplaintPC from '../views/Complaint-PC.vue'
 import LostAndFoundPC from '../views/LostAndFound-PC.vue'
+import PointsMallMobile from '../views/PointsMall-Mobile.vue'
 
 const routes = [
   {
@@ -65,6 +66,11 @@ const routes = [
     path: '/mine',
     name: 'Mine',
     component: () => import('../views/mine.vue')
+  },
+  {
+    path: '/PointsMall-Mobile',
+    name: 'pointsMallMobile',
+    component: PointsMallMobile
   }
 ]
 
