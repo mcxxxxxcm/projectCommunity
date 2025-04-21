@@ -13,6 +13,10 @@
     <div class="app-header">
       <button class="back-btn" @click="goBack">←</button>
       <h1 class="app-title">积分商城</h1>
+      <div class="user-points">
+        <span class="points-icon">🪙</span>
+        <span>{{ userPoints }}积分</span>
+      </div>
     </div>
     
     <!-- 页面内容 -->
@@ -26,12 +30,13 @@
       <!-- 商品列表 -->
       <div class="points-mall-content">
         <div class="product-list">
-          <!-- 示例商品 -->
-          <div class="product-item" v-for="i in 5" :key="i">
-            <div class="product-image">商品图片</div>
+          <div class="product-item" v-for="product in products" :key="product.id">
+            <div class="product-image">
+              <img :src="product.image" :alt="product.name">
+            </div>
             <div class="product-info">
-              <h3>商品名称 {{i}}</h3>
-              <p>500积分</p>
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.points }}积分</p>
               <button class="exchange-btn">兑换</button>
             </div>
           </div>
@@ -54,17 +59,22 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 
 const router = useRouter();
+const authStore = useAuthStore();
 const currentTime = ref('');
+const userPoints = ref(authStore.points); // 初始化为authStore中的积分
 
+// 时间更新函数
 const updateTime = () => {
   const now = new Date();
   currentTime.value = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
 };
 
+// 导航函数
 const goBack = () => {
   router.go(-1);
 };
@@ -77,8 +87,54 @@ const goToMine = () => {
   router.push('/mine');
 };
 
+// 获取用户积分
+const fetchUserPoints = async () => {
+  userPoints.value = authStore.points; // 修改为从authStore获取
+};
+
+// 监听用户积分变化
+watch(() => authStore.points, (newPoints) => {
+  userPoints.value = newPoints;
+});
+
+// 商品数据
+const products = ref([
+  {
+    id: 1,
+    name: '智能音箱',
+    points: 800,
+    image: 'https://img.alicdn.com/i4/2022915709/O1CN01EwoshF1s2lyolC8gV_!!2022915709.jpg_100x100.jpg'
+  },
+  {
+    id: 2, 
+    name: '扫地机器人',
+    points: 500,
+    image: 'https://img0.baidu.com/it/u=1895892400,957462569&fm=253&fmt=auto&app=138&f=JPEG?w=100&h=100'
+  },
+  {
+    id: 3,
+    name: '洗发水',
+    points: 300,
+    image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
+  },
+  {
+    id: 4,
+    name: '进口猕猴桃',
+    points: 600,
+    image: 'https://img1.baidu.com/it/u=3505855416,4025288674&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
+  },
+  {
+    id: 5,
+    name: '恒温热水壶',
+    points: 400,
+    image: 'https://img1.baidu.com/it/u=2511096713,367825848&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
+  }
+]);
+
+// 生命周期钩子
 onMounted(() => {
   updateTime();
+  fetchUserPoints();
   const timer = setInterval(updateTime, 60000);
   onUnmounted(() => clearInterval(timer));
 });
@@ -132,7 +188,10 @@ onMounted(() => {
 .mobile-content {
   flex: 1;
   overflow-y: auto;
-  padding-bottom: 60px; /* 为底部导航栏留出空间 */
+  overflow-x: hidden; /* 禁止水平滚动 */
+  padding-bottom: 60px;
+  scrollbar-width: thin; /* 细滚动条 */
+  scrollbar-color: #cce0d7 #f5f5f5; /* 滚动条颜色 */;
 }
 
 /* 状态栏 */
@@ -196,8 +255,83 @@ onMounted(() => {
 
 /* 商品列表 */
 .points-mall-content {
-  padding: 0 16px;
-  min-height: calc(100% - 100px); /* 确保内容足够长可以滚动 */
+  padding: 16px;
+  min-height: calc(100% - 100px);
+}
+
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.product-item {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.product-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.product-image {
+  height: 120px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.product-info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 垂直居中 */
+  align-items: center; /* 水平居中 */
+  text-align: center; /* 文本居中 */
+  height: calc(100% - 140px); /* 减去图片高度 */
+}
+
+.product-info h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%; /* 确保宽度100% */
+}
+
+.product-info p {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  color: #42b983;
+  font-weight: 600;
+  width: 100%; /* 确保宽度100% */
+}
+
+.exchange-btn {
+  width: 80%; /* 调整按钮宽度 */
+  margin: 0 auto; /* 按钮居中 */
+  padding: 5px;
+  background: #42b983;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.exchange-btn:hover {
+  background: #3aa876;
 }
 
 /* 底部导航栏调整 */
@@ -247,4 +381,13 @@ onMounted(() => {
   font-size: 0.75rem;
   font-weight: 500;
 }
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  max-width: 100px;
+  max-height: 100px;
+}
 </style>
+
