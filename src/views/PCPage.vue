@@ -137,22 +137,16 @@ const services = ref([
 // 添加轮播图数据（合并到主script中）
 const bannerImages = ref([
   {
-    url: '../images/4969e1e07de6867e793ed56ce591c693.jpeg', // 社区服务场景
-    alt: '社区服务',
-    title: '温馨社区 服务到家',
-    desc: '全方位社区生活服务'
+    url: '/images/banner4.jpg', // 存储在public/images下的高清图
+    alt: '社区服务'
   },
   {
-    url: 'https://img95.699pic.com/photo/50136/1348.jpg_wh860.jpg', // 便民活动场景
-    alt: '便民服务', 
-    title: '便民服务一站式',
-    desc: '让生活更便捷'
+    url: '/images/banner2.jpg', // 便民活动场景
+    alt: '便民服务'
   },
   {
-    url: 'https://img95.699pic.com/photo/50136/1349.jpg_wh860.jpg', // 社区活动场景
-    alt: '社区活动',
-    title: '丰富社区活动',
-    desc: '共建和谐邻里关系'
+    url: '/images/banner3.jpg', // 社区活动场景
+    alt: '社区活动'
   }
 ]);
 
