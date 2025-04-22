@@ -91,7 +91,7 @@ const router = useRouter();
 const authStore = useAuthStore();
 
 // 状态管理
-const points = ref(parseInt(localStorage.getItem('userPoints')) || 5000);
+const points = ref(authStore.points !== undefined ? authStore.points : 5000);
 const activeCategory = ref('全部');
 const headerVisible = ref(true);
 const showBackToTop = ref(false);

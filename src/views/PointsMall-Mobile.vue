@@ -90,9 +90,17 @@ const goToMine = () => {
 
 // 获取用户积分
 const fetchUserPoints = async () => {
-  userPoints.value = authStore.points; // 修改为从authStore获取
+  try {
+    await authStore.fetchUserPoints(); // 确保从后端获取最新积分
+    userPoints.value = authStore.points;
+    localStorage.setItem('userPoints', authStore.points);
+  } catch (error) {
+    console.error('获取积分失败:', error);
+    // 使用本地缓存作为后备
+    const cachedPoints = localStorage.getItem('userPoints');
+    userPoints.value = cachedPoints !== null ? parseInt(cachedPoints) : 5000;
+  }
 };
-
 // 监听用户积分变化
 watch(() => authStore.points, (newPoints) => {
   userPoints.value = newPoints;

@@ -21,8 +21,8 @@
 
     <!-- 功能列表 -->
     <div class="function-list">
-      <div class="function-item" @click="goToPage('/points')">
-        <span>我的积分</span>
+      <div class="function-item" @click="addPoints">
+        <span>获取积分</span>
         <span>→</span>
       </div>
       <div class="function-item" @click="goToPage('/settings')">
@@ -45,7 +45,7 @@
 import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
-import { ElMessageBox } from 'element-plus';
+import { ElMessageBox, ElMessage } from 'element-plus';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -53,7 +53,7 @@ const points = ref(0);
 
 // 初始化积分
 onMounted(() => {
-  points.value = authStore.points || 5000;
+  points.value = authStore.points !== undefined ? authStore.points : 5000;
   localStorage.setItem('userPoints', points.value);
 });
 
@@ -90,6 +90,19 @@ const logout = () => {
     });
   }).catch(() => {
     // 用户点击了取消
+  });
+};
+
+const addPoints = () => {
+  const newPoints = points.value + 1000;
+  points.value = newPoints;
+  authStore.points = newPoints;
+  localStorage.setItem('userPoints', newPoints);
+  
+  ElMessage({
+    message: '成功获取1000积分',
+    type: 'success',
+    duration: 3000
   });
 };
 </script>

@@ -89,6 +89,17 @@ onMounted(() => {
   const timer = setInterval(updateTime, 60000);
   onUnmounted(() => clearInterval(timer));
 });
+
+const addPoints = () => {
+  const newPoints = points.value + 1000;
+  points.value = newPoints;
+  authStore.points = newPoints; // 更新store中的积分
+  localStorage.setItem('userPoints', newPoints); // 更新localStorage
+  ElMessageBox.alert('成功获取1000积分', '提示', {
+    confirmButtonText: '确定',
+    type: 'success'
+  });
+};
 </script>
 
 <style scoped>

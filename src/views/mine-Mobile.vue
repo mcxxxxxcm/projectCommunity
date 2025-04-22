@@ -30,10 +30,10 @@
 
       <!-- 功能列表 -->
       <div class="function-list">
-        <div class="function-item" @click="goToPage('/points')">
-          <span>我的积分</span>
-          <span>→</span>
-        </div>
+        <div class="function-item" @click="addPoints">
+        <span>获取积分</span>
+        <span>→</span>
+      </div>
         <div class="function-item" @click="goToPage('/settings')">
           <span>设置</span>
           <span>→</span>
@@ -67,12 +67,14 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { ElMessage } from 'element-plus'
+
 
 const router = useRouter();
 const authStore = useAuthStore();
 const currentTime = ref('');
 const username = ref(authStore.username || '用户名');
-const userPoints = ref(authStore.points || 5000);
+const userPoints = ref(authStore.points !== undefined ? authStore.points : 5000);
 
 const updateTime = () => {
   const now = new Date();
@@ -101,6 +103,28 @@ onMounted(() => {
   const timer = setInterval(updateTime, 60000);
   onUnmounted(() => clearInterval(timer));
 });
+
+const addPoints = () => {
+  try {
+    const newPoints = userPoints.value + 1000;
+    userPoints.value = newPoints;
+    authStore.points = newPoints;
+    localStorage.setItem('userPoints', newPoints);
+    
+    ElMessage({
+      message: '成功获取1000积分',
+      type: 'success',
+      duration: 3000
+    });
+  } catch (error) {
+    console.error('获取积分失败:', error);
+    ElMessage({
+      message: '获取积分失败',
+      type: 'error',
+      duration: 3000
+    });
+  }
+};
 </script>
 
 <style scoped>
