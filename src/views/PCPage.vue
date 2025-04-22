@@ -249,11 +249,24 @@ const bannerImages = ref([
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
-  background: rgba(255, 255, 255, 0.1);
+  background: #42b983; /* 改为更显眼的绿色背景 */
   border: none;
-  border-radius: 4px;
+  border-radius: 20px; /* 增加圆角 */
   color: white;
   cursor: pointer;
+  font-weight: bold; /* 加粗文字 */
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 添加阴影 */
+}
+
+.mobile-switch:hover {
+  background: #3aa876; /* 悬停时颜色变深 */
+  transform: translateY(-2px); /* 悬停时轻微上浮 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 悬停时阴影加深 */
+}
+
+.mobile-switch .icon {
+  font-size: 1.2rem; /* 增大图标 */
 }
 
 .banner {

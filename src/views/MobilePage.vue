@@ -43,7 +43,7 @@
           <span class="nav-icon">🏠</span>
           <span class="nav-text">首页</span>
         </div>
-        <div class="nav-item" :class="{active: $route.path === '/mine'}" @click="goToPage('/mine')">
+        <div class="nav-item" @click="goToPage('/mine-Mobile')">
           <span class="nav-icon">👤</span>
           <span class="nav-text">我的</span>
         </div>
@@ -123,15 +123,19 @@ onMounted(() => {
   color: white;
   display: flex;
   align-items: center;
-  justify-content: center; /* 标题居中 */
+  justify-content: center;
   position: relative;
 }
 
 .app-title {
+  max-height: 20px;
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
   text-align: center; /* 确保文本居中 */
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  justify-content: center; /* 水平居中 */
 }
 
 /* 搜索框 */

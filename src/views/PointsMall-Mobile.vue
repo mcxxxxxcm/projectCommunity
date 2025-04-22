@@ -8,7 +8,7 @@
         <span>🔋</span>
       </div>
     </div>
-    
+
     <!-- 顶部导航栏 -->
     <div class="app-header">
       <button class="back-btn" @click="goBack">←</button>
@@ -18,7 +18,7 @@
         <span>{{ userPoints }}积分</span>
       </div>
     </div>
-    
+
     <!-- 页面内容 -->
     <div class="mobile-content">
       <!-- 搜索框 -->
@@ -26,7 +26,7 @@
         <input type="text" placeholder="搜索商品...">
         <span class="search-icon">🔍</span>
       </div>
-      
+
       <!-- 商品列表 -->
       <div class="points-mall-content">
         <div class="product-list">
@@ -37,13 +37,13 @@
             <div class="product-info">
               <h3>{{ product.name }}</h3>
               <p>{{ product.points }}积分</p>
-              <button class="exchange-btn">兑换</button>
+              <button class="exchange-btn" @click="exchangeProduct(product)">兑换</button>
             </div>
           </div>
         </div>
       </div>
     </div>
-    
+
     <!-- 底部导航栏 -->
     <div class="bottom-nav">
       <div class="nav-item active" @click="goToHome">
@@ -62,11 +62,12 @@
 import { ref, onMounted, onUnmounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { ElMessage } from 'element-plus'
 
 const router = useRouter();
 const authStore = useAuthStore();
 const currentTime = ref('');
-const userPoints = ref(parseInt(localStorage.getItem('userPoints')) || 0); // 从localStorage初始化
+const userPoints = ref(parseInt(localStorage.getItem('userPoints')) || 5000); // 从localStorage初始化
 
 // 时间更新函数
 const updateTime = () => {
@@ -84,7 +85,7 @@ const goToHome = () => {
 };
 
 const goToMine = () => {
-  router.push('/mine');
+  router.push('/mine-Mobile');
 };
 
 // 获取用户积分
@@ -103,31 +104,31 @@ const products = ref([
   {
     id: 1,
     name: '智能音箱',
-    points: 800,
+    points: 2000,
     image: 'https://img.alicdn.com/i4/2022915709/O1CN01EwoshF1s2lyolC8gV_!!2022915709.jpg_100x100.jpg'
   },
   {
-    id: 2, 
+    id: 2,
     name: '扫地机器人',
-    points: 500,
+    points: 4000,
     image: 'https://img0.baidu.com/it/u=1895892400,957462569&fm=253&fmt=auto&app=138&f=JPEG?w=100&h=100'
   },
   {
     id: 3,
     name: '洗发水',
-    points: 300,
+    points: 1000,
     image: 'https://img2.baidu.com/it/u=2174352556,412092349&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
   },
   {
     id: 4,
     name: '进口猕猴桃',
-    points: 600,
+    points: 500,
     image: 'https://img1.baidu.com/it/u=3505855416,4025288674&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
   },
   {
     id: 5,
     name: '恒温热水壶',
-    points: 400,
+    points: 1000,
     image: 'https://img1.baidu.com/it/u=2511096713,367825848&fm=253&fmt=auto&app=138&f=JPEG?w=380&h=380'
   }
 ]);
@@ -139,6 +140,25 @@ onMounted(() => {
   const timer = setInterval(updateTime, 60000);
   onUnmounted(() => clearInterval(timer));
 });
+
+// 在script setup部分添加exchangeProduct函数
+const exchangeProduct = (product) => {
+  if (userPoints.value >= product.points) {
+    const newPoints = userPoints.value - product.points;
+    authStore.updatePoints(newPoints);
+    ElMessage.success({
+      message: `成功兑换 ${product.name}，消耗 ${product.points}积分`,
+      duration: 3000,
+      showClose: true
+    });
+  } else {
+    ElMessage.error({
+      message: `积分不足，无法兑换${product.name}`,
+      duration: 3000,
+      showClose: true
+    });
+  }
+};
 </script>
 
 <style scoped>
@@ -165,7 +185,8 @@ onMounted(() => {
   color: white;
   display: flex;
   align-items: center;
-  justify-content: center; /* 标题居中 */
+  justify-content: center;
+  /* 标题居中 */
   position: relative;
 }
 
@@ -173,7 +194,8 @@ onMounted(() => {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
-  text-align: center; /* 确保文本居中 */
+  text-align: center;
+  /* 确保文本居中 */
 }
 
 .back-btn {
@@ -189,10 +211,14 @@ onMounted(() => {
 .mobile-content {
   flex: 1;
   overflow-y: auto;
-  overflow-x: hidden; /* 禁止水平滚动 */
+  overflow-x: hidden;
+  /* 禁止水平滚动 */
   padding-bottom: 60px;
-  scrollbar-width: thin; /* 细滚动条 */
-  scrollbar-color: #cce0d7 #f5f5f5; /* 滚动条颜色 */;
+  scrollbar-width: thin;
+  /* 细滚动条 */
+  scrollbar-color: #cce0d7 #f5f5f5;
+  /* 滚动条颜色 */
+  ;
 }
 
 /* 状态栏 */
@@ -205,21 +231,24 @@ onMounted(() => {
   font-size: 14px;
 }
 
-/* 顶部导航栏 */
+/* 顶部导航栏样式调整 */
 .app-header {
   padding: 12px 16px;
   background: #42b983;
   color: white;
   display: flex;
   align-items: center;
+  position: relative;
 }
 
 .app-title {
   font-size: 1.5rem;
   font-weight: 600;
   margin: 0;
-  flex: 1;
-  text-align: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
 }
 
 .back-btn {
@@ -228,6 +257,16 @@ onMounted(() => {
   color: white;
   font-size: 1.2rem;
   padding: 0 10px 0 0;
+  z-index: 1;
+}
+
+.user-points {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.9rem;
+  z-index: 1;
 }
 
 /* 搜索框 */
@@ -293,10 +332,14 @@ onMounted(() => {
   padding: 12px;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* 垂直居中 */
-  align-items: center; /* 水平居中 */
-  text-align: center; /* 文本居中 */
-  height: calc(100% - 140px); /* 减去图片高度 */
+  justify-content: center;
+  /* 垂直居中 */
+  align-items: center;
+  /* 水平居中 */
+  text-align: center;
+  /* 文本居中 */
+  height: calc(100% - 140px);
+  /* 减去图片高度 */
 }
 
 .product-info h3 {
@@ -306,7 +349,8 @@ onMounted(() => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%; /* 确保宽度100% */
+  width: 100%;
+  /* 确保宽度100% */
 }
 
 .product-info p {
@@ -314,12 +358,15 @@ onMounted(() => {
   font-size: 0.9rem;
   color: #42b983;
   font-weight: 600;
-  width: 100%; /* 确保宽度100% */
+  width: 100%;
+  /* 确保宽度100% */
 }
 
 .exchange-btn {
-  width: 80%; /* 调整按钮宽度 */
-  margin: 0 auto; /* 按钮居中 */
+  width: 80%;
+  /* 调整按钮宽度 */
+  margin: 0 auto;
+  /* 按钮居中 */
   padding: 5px;
   background: #42b983;
   color: white;
@@ -391,4 +438,3 @@ onMounted(() => {
   max-height: 100px;
 }
 </style>
-

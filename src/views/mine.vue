@@ -42,14 +42,20 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { ElMessageBox } from 'element-plus';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const points = ref(parseInt(localStorage.getItem('userPoints')) || 0);
+const points = ref(0);
+
+// 初始化积分
+onMounted(() => {
+  points.value = authStore.points || 5000;
+  localStorage.setItem('userPoints', points.value);
+});
 
 // 监听积分变化
 watch(() => authStore.points, (newPoints) => {

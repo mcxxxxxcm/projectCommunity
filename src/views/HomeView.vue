@@ -8,19 +8,19 @@
       <div class="login-form" v-if="!isLoggedIn">
         <div class="form-group">
           <label for="username">用户名</label>
-          <input 
-            type="text" 
-            id="username" 
-            v-model="username" 
+          <input
+            type="text"
+            id="username"
+            v-model="username"
             placeholder="请输入用户名"
           >
         </div>
         <div class="form-group">
           <label for="password">密码</label>
-          <input 
-            type="password" 
-            id="password" 
-            v-model="password" 
+          <input
+            type="password"
+            id="password"
+            v-model="password"
             placeholder="请输入密码"
           >
         </div>

@@ -2,9 +2,9 @@ import { defineStore } from 'pinia';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    isLoggedIn: false,
-    username: '',
-    points: parseInt(localStorage.getItem('userPoints')) || 0 // 从localStorage初始化
+    isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+    username: localStorage.getItem('username') || '',
+    points: parseInt(localStorage.getItem('userPoints')) || 5000
   }),
   actions: {
     login(username) {

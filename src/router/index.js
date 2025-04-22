@@ -71,6 +71,11 @@ const routes = [
     path: '/PointsMall-Mobile',
     name: 'pointsMallMobile',
     component: PointsMallMobile
+  },
+  {
+    path: '/mine-Mobile',
+    name: 'mine-Mobile',
+    component: () => import('../views/mine-Mobile.vue')
   }
 ]
 
