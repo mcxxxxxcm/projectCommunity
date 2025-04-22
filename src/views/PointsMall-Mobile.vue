@@ -153,7 +153,7 @@ const exchangeProduct = (product) => {
     });
   } else {
     ElMessage.error({
-      message: `积分不足，无法兑换${product.name}`,
+      message: `积分不足，无法兑换${product.name}。查看我的来获取更多积分。`,
       duration: 3000,
       showClose: true
     });
