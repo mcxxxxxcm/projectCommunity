@@ -82,6 +82,11 @@ const routes = [
     path: '/Parking-PC',
     name: 'parkingPC',
     component: ParkingPC
+  },
+  {
+    path: '/CommunityNotice-PC',
+    name: 'CommunityNoticePC',
+    component: () => import('../views/CommunityNotice-PC.vue')
   }
 ]
 

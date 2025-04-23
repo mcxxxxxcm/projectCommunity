@@ -129,7 +129,7 @@ const services = ref([
   { name: '隐私管理', desc: '管理您的隐私设置', icon: '🔒', path: '/Privacy-PC' },
   { name: '投诉建议', desc: '提交您的投诉和建议', icon: '📢', path: '/Complaint-PC' },
   { name: '寻物启事', desc: '发布和查看失物招领', icon: '🔍', path: '/LostAndFound-PC' },
-  { name: '社区公告', desc: '查看最新社区通知', icon: '📢', path: '/Notice-PC' },
+  { name: '社区公告', desc: '查看最新社区通知', icon: '📢', path: '/CommunityNotice-PC' },
   { name: '活动报名', desc: '参与社区活动', icon: '🎯', path: '/Activity-PC' },
   { name: '物业报修', desc: '在线提交维修申请', icon: '🔧', path: '/Repair-PC' },
   { name: '问卷调查', desc: '参与社区调查', icon: '📝', path: '/Survey-PC' }
