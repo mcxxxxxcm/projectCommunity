@@ -10,6 +10,7 @@ import PrivacyPC from '../views/Privacy-PC.vue'
 import ComplaintPC from '../views/Complaint-PC.vue'
 import LostAndFoundPC from '../views/LostAndFound-PC.vue'
 import PointsMallMobile from '../views/PointsMall-Mobile.vue'
+import ParkingPC from '../views/Parking-PC.vue'
 
 const routes = [
   {
@@ -76,6 +77,11 @@ const routes = [
     path: '/mine-Mobile',
     name: 'mine-Mobile',
     component: () => import('../views/mine-Mobile.vue')
+  },
+  {
+    path: '/Parking-PC',
+    name: 'parkingPC',
+    component: ParkingPC
   }
 ]
 

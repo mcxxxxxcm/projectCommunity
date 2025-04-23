@@ -67,7 +67,8 @@
       <div class="footer-links">
         <a href="#">关于我们</a>
         <a href="#">联系方式</a>
-        <a href="#">隐私政策</a>
+        <a href="#">隐私政策</a> <br><br>
+        <a href="#">便民电话：176*****456</a>
       </div>
     </footer>
   </div>
@@ -120,6 +121,7 @@ onUnmounted(() => {
 
 // 添加服务列表数据
 const services = ref([
+  { name: '停车管理', desc: '便捷的停车场使用', icon: '🚗', path: '/Parking-PC' },
   { name: '积分商城', desc: '用积分兑换精美礼品', icon: '🛒', path: '/PointsMall-PC' },
   { name: '儿童托管', desc: '专业的儿童照看服务', icon: '👶', path: '/ChildCare-PC' },
   { name: '水电缴费', desc: '便捷的公共事业缴费', icon: '💧', path: '/Utilities-PC' },
@@ -128,7 +130,6 @@ const services = ref([
   { name: '投诉建议', desc: '提交您的投诉和建议', icon: '📢', path: '/Complaint-PC' },
   { name: '寻物启事', desc: '发布和查看失物招领', icon: '🔍', path: '/LostAndFound-PC' },
   { name: '社区公告', desc: '查看最新社区通知', icon: '📢', path: '/Notice-PC' },
-  { name: '便民电话', desc: '常用服务联系电话', icon: '📞', path: '/Contact-PC' },
   { name: '活动报名', desc: '参与社区活动', icon: '🎯', path: '/Activity-PC' },
   { name: '物业报修', desc: '在线提交维修申请', icon: '🔧', path: '/Repair-PC' },
   { name: '问卷调查', desc: '参与社区调查', icon: '📝', path: '/Survey-PC' }
@@ -380,12 +381,19 @@ const bannerImages = ref([
 .banner {
   margin-top: 0;
   padding: 0 !important;
+  width: 90%;
+  height: 90%;
+  border-radius: 10px;
+  margin: 0 auto; /* 添加自动外边距使容器居中 */
 }
 
 .banner-image {
   width: 100%;
   height: 100%;
+  border-radius: 10px;
   object-fit: cover;
+  display: block; /* 确保图片作为块级元素 */
+  margin: 0 auto; /* 图片居中 */
 }
 
 .banner-text {
