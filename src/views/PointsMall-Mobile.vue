@@ -46,9 +46,13 @@
 
     <!-- 底部导航栏 -->
     <div class="bottom-nav">
-      <div class="nav-item active" @click="goToHome">
+      <div class="nav-item" @click="goToHome">
         <span class="nav-icon">🏠</span>
         <span class="nav-text">首页</span>
+      </div>
+      <div class="nav-item" @click="goToPage('/message-Mobile')">
+        <span class="nav-icon">💬</span>
+        <span class="nav-text">消息</span>
       </div>
       <div class="nav-item" @click="goToMine">
         <span class="nav-icon">👤</span>
@@ -82,6 +86,10 @@ const goBack = () => {
 
 const goToHome = () => {
   router.push('/MobilePage');
+};
+
+const goToPage = (path) => {
+  router.push(path);
 };
 
 const goToMine = () => {

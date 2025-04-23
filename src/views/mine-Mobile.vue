@@ -55,6 +55,10 @@
         <span class="nav-icon">🏠</span>
         <span class="nav-text">首页</span>
       </div>
+      <div class="nav-item" @click="goToPage('/message-Mobile')">
+        <span class="nav-icon">💬</span>
+        <span class="nav-text">消息</span>
+      </div>
       <div class="nav-item active">
         <span class="nav-icon">👤</span>
         <span class="nav-text">我的</span>
