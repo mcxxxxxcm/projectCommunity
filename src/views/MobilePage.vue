@@ -14,12 +14,18 @@
       <h1 class="app-title">社区服务</h1>
     </div>
     
-    <!-- 手机内容区域 -->
-    <div class="mobile-content">
+          
       <!-- 搜索框 -->
       <div class="search-bar">
         <input type="text" placeholder="搜索社区服务...">
         <span class="search-icon">🔍</span>
+      </div>
+
+    <!-- 手机内容区域 -->
+    <div class="mobile-content">
+      <!-- 单张banner图 -->
+      <div class="banner-container">
+        <img src="/images/banner5.jpg" alt="banner">
       </div>
       
       <!-- 服务导航 -->
@@ -55,6 +61,8 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted, onUnmounted } from 'vue';
+import Swiper from 'swiper';
+import 'swiper/css';
 
 const router = useRouter();
 const currentTime = ref('');
@@ -87,7 +95,23 @@ const goToPage = (path) => {
 onMounted(() => {
   updateTime();
   const timer = setInterval(updateTime, 60000);
-  onUnmounted(() => clearInterval(timer));
+  
+  // 初始化Swiper
+  new Swiper('.swiper-container', {
+    loop: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+  });
+  
+  onUnmounted(() => {
+    clearInterval(timer);
+  });
 });
 
 const addPoints = () => {
@@ -258,4 +282,22 @@ const addPoints = () => {
   font-size: 0.75rem;
   font-weight: 500;
 }
+
+/* 单张banner样式 */
+.banner-container {
+  width: 100%;
+  height: 150px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: center;
+}
+
+.banner-container img {
+  width: 90%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px; /* 可选：添加圆角效果 */
+}
+
+/* 删除原有的.swiper-container相关样式 */
 </style>

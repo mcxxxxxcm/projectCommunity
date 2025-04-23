@@ -53,8 +53,10 @@ const points = ref(0);
 
 // 初始化积分
 onMounted(() => {
-  points.value = authStore.points !== undefined ? authStore.points : 5000;
-  localStorage.setItem('userPoints', points.value);
+  // 优先从localStorage读取积分，如果没有则使用默认值
+  const storedPoints = localStorage.getItem('userPoints');
+  points.value = storedPoints ? parseInt(storedPoints) : (authStore.points !== undefined ? authStore.points : 5000);
+  authStore.points = points.value;
 });
 
 // 监听积分变化
@@ -83,6 +85,7 @@ const logout = () => {
     }
   ).then(() => {
     authStore.logout();
+    // 移除这行：localStorage.removeItem('userPoints');
     router.push('/');
     ElMessageBox.alert('已成功退出登录', '提示', {
       confirmButtonText: '确定',

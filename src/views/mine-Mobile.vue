@@ -95,6 +95,7 @@ const goToPage = (path) => {
 
 const logout = () => {
   authStore.logout();
+  // 移除这行：localStorage.removeItem('userPoints');
   router.push('/');
 };
 
