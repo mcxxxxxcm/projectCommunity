@@ -35,7 +35,8 @@
       <!-- Banner区域 -->
       <section class="banner">
         <!-- 修改后的Banner区域 -->
-        <el-carousel :interval="3000" height="400px">
+        <!-- 修改banner高度 -->
+        <el-carousel :interval="3000" height="300px">
           <el-carousel-item v-for="(image, index) in bannerImages" :key="index">
             <img :src="image.url" :alt="image.alt" class="banner-image">
             <div class="banner-text">
@@ -44,6 +45,47 @@
             </div>
           </el-carousel-item>
         </el-carousel>
+      </section>
+
+      <!-- 修改公告栏区域 -->
+      <section class="announcement-section">
+        <div class="announcement-box" style="flex: 0.8;"> <!-- 缩小公告栏 -->
+          <h2 class="announcement-title">社区公告</h2>
+          <ul class="announcement-list">
+            <li v-for="(notice, index) in notices" :key="index">
+              <span class="notice-date">{{ notice.date }}</span>
+              <span class="notice-content">{{ notice.content }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="announcement-box" style="flex: 0.8;"> <!-- 缩小活动栏 -->
+          <h2 class="announcement-title">社区活动</h2>
+          <ul class="announcement-list">
+            <li v-for="(activity, index) in activities" :key="index">
+              <span class="activity-date">{{ activity.date }}</span>
+              <span class="activity-content">{{ activity.content }}</span>
+            </li>
+          </ul>
+        </div>
+        <!-- 修改公告栏区域 -->
+        <section class="announcement-section">
+          <div class="announcement-box.ai-assistant" style="flex: 1;">
+            <h2 class="announcement-title">AI管家</h2>
+            <div class="ai-chat">
+              <div class="ai-messages">
+                <div v-for="(msg, index) in aiMessages" :key="index" 
+                     :class="['ai-message', msg.type]">
+                  {{ msg.content }}
+                </div>
+              </div>
+              <div class="ai-input">
+                <input v-model="aiInput" placeholder="输入您的问题..." 
+                         @keyup.enter="sendAiMessage">
+                <button @click="sendAiMessage">发送</button>
+              </div>
+            </div>
+          </div>
+        </section>
       </section>
 
       <!-- 内容区域 -->
@@ -151,6 +193,77 @@ const bannerImages = ref([
   }
 ]);
 
+// 新增公告数据
+const notices = ref([
+  { date: '05-20', content: '关于小区垃圾分类的通知' },
+  { date: '05-18', content: '物业费缴纳提醒' },
+  { date: '05-15', content: '电梯维护通知' },
+  { date: '05-10', content: '小区绿化改造计划' }
+]);
+
+// 新增活动数据
+const activities = ref([
+  { date: '06-01', content: '儿童节亲子活动' },
+  { date: '05-28', content: '社区健康讲座' },
+  { date: '05-25', content: '邻里篮球比赛' },
+  { date: '05-22', content: '垃圾分类知识竞赛' }
+]);
+
+// 新增AI相关数据
+const aiMessages = ref([
+  { type: 'ai', content: '您好，我是社区AI管家，有什么可以帮您？' }
+]);
+const aiInput = ref('');
+
+const sendAiMessage = async () => {
+  if (!aiInput.value.trim()) return;
+  
+  // 添加用户消息
+  aiMessages.value.push({
+    type: 'user',
+    content: aiInput.value
+  });
+  
+  const userMessage = aiInput.value;
+  aiInput.value = '';
+  
+  try {
+    // 调用火山引擎方舟大模型API
+    const response = await fetch('https://ark.cn-beijing.volces.com/api/v3/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer cdd6dd0b-d9cc-40fa-88ad-01494f2255c3' // 使用方舟API密钥
+      },
+      body: JSON.stringify({
+        model: "ep-20250420200120-qk98h", // 方舟大模型ID
+        messages: [
+          {
+            role: "system",
+            content: "你是社区服务AI助手，请用简洁友好的方式回答用户问题"
+          },
+          {
+            role: "user",
+            content: userMessage
+          }
+        ]
+      })
+    });
+    
+    const data = await response.json();
+    
+    // 添加AI回复
+    aiMessages.value.push({
+      type: 'ai',
+      content: data.choices[0].message.content
+    });
+  } catch (error) {
+    aiMessages.value.push({
+      type: 'ai',
+      content: '抱歉，AI服务暂时不可用'
+    });
+  }
+};
 </script>
 
 <!-- 删除重复的<style>标签，保留一个 -->
@@ -382,33 +495,244 @@ const bannerImages = ref([
   margin-top: 0;
   padding: 0 !important;
   width: 90%;
-  height: 90%;
+  height: auto; /* 改为自适应高度 */
   border-radius: 10px;
-  margin: 0 auto; /* 添加自动外边距使容器居中 */
+  margin: 0 auto;
 }
 
-.banner-image {
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  object-fit: cover;
-  display: block; /* 确保图片作为块级元素 */
-  margin: 0 auto; /* 图片居中 */
+/* 调整公告栏区域 */
+.announcement-section {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  max-width: 1200px; /* 增加最大宽度 */
+  margin: 0 auto 2rem; /* 增加下边距 */
+  min-height: 300px; /* 设置最小高度 */
 }
 
-.banner-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center;
+/* 美化AI管家容器 */
+.announcement-box.ai-assistant {
+  flex: 1.4;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  min-height: 300px; /* 添加最小高度与公告栏对齐 */
+}
+
+/* 调整AI聊天区域高度 */
+.ai-chat {
+  height: 100%; /* 改为100%填充容器 */
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  background: #f8fafc;
+}
+
+/* 消息气泡样式 */
+.ai-message {
+  max-width: 80%;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 18px;
+  line-height: 1.4;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.ai-message.ai {
+  background: #e3f2fd;
+  color: #1976d2;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+  margin-right: auto;
+}
+
+.ai-message.user {
+  background: #f1f1f1;
+  color: #333;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+  margin-left: auto;
+}
+
+/* 调整消息容器布局 */
+.ai-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 输入区域 */
+.ai-input {
+  display: flex;
+  gap: 10px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+}
+
+.ai-input input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.ai-input input:focus {
+  border-color: #42b983;
+  box-shadow: 0 0 0 2px rgba(66, 185, 131, 0.2);
+}
+
+.ai-input button {
+  padding: 10px 20px;
+  background: #42b983;
   color: white;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
-  width: 80%;
-  z-index: 1;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
 }
 
-.el-carousel {
-  width: 100%;
+.ai-input button:hover {
+  background: #3aa876;
+  transform: translateY(-1px);
+}
+
+/* 公告栏专属样式 - 不影响AI管家 */
+.announcement-box:not(.ai-assistant) {
+  flex: 0.8;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.announcement-title {
+  font-size: 1.3rem;
+  color: #2c3e50;
+  padding-bottom: 12px;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #42b983;
+  font-weight: 600;
+}
+
+.announcement-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.announcement-list li {
+  padding: 12px 0;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+}
+
+.announcement-list li:last-child {
+  border-bottom: none;
+}
+
+.notice-date, .activity-date {
+  color: #42b983;
+  font-weight: bold;
+  min-width: 60px;
+  font-size: 1.1rem;
+}
+
+.notice-content, .activity-content {
+  color: #333;
+  flex: 1;
+  font-size: 1rem;
+  padding-left: 15px;
+  line-height: 1.5;
+}
+
+/* 公告栏悬停效果 - 不影响AI管家 */
+.announcement-box:not(.ai-assistant):hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* AI管家专属样式保持不变 */
+.announcement-box.ai-assistant {
+  /* 原有AI管家样式保持不变 */
+}
+
+/* 重构AI管家容器 */
+.announcement-box.ai-assistant {
+  flex: 1.4;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  min-height: 300px;
+}
+
+/* 重构AI聊天区域 */
+.ai-chat {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #f8fafc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 消息区域 */
+.ai-messages {
+  flex: 1;
+  padding: 15px;
+  overflow-y: auto;
+  background: white;
+  border-bottom: 1px solid #eee;
+}
+
+/* 输入区域 */
+.ai-input {
+  display: flex;
+  padding: 15px;
+  background: #f5f7fa;
+  border-top: 1px solid #e9ecef;
+}
+
+.ai-input input {
+  flex: 1;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.ai-input button {
+  margin-left: 10px;
+  padding: 10px 20px;
+  background: #42b983;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+/* 标题样式统一 */
+.announcement-title {
+  color: #2c3e50;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #42b983;
 }
 </style>

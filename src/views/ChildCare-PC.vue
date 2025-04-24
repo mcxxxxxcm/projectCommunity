@@ -6,17 +6,17 @@
         <h2>今日伙食</h2>
         <div class="meal-item">
           <h3>早餐</h3>
-          <img src="/public/images/早餐.jpg" alt="早餐" />
+          <img src="/images/早餐.jpg" alt="早餐" />
           <p>水煮蛋、小米粥、豆沙包</p>
         </div>
         <div class="meal-item">
           <h3>午餐</h3>
-          <img src="/public/images/午餐.jpg" alt="午餐" />
+          <img src="/images/午餐.jpg" alt="午餐" />
           <p>红烧肉、宫保鸡丁、香煎鱼、清炒时蔬、凉拌黄瓜、冬瓜肉丸汤</p>
         </div>
         <div class="meal-item">
           <h3>晚餐</h3>
-          <img src="/public/images/晚餐.jpg" alt="晚餐" />
+          <img src="/images/晚餐.jpg" alt="晚餐" />
           <p>糖醋排骨、番茄牛腩、椒盐虾、炒油麦菜、蒜蓉西兰花、玉米排骨汤</p>
         </div>
       </div>
