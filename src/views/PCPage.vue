@@ -159,7 +159,7 @@ const services = ref([
 // 添加轮播图数据（合并到主script中）
 const bannerImages = ref([
   {
-    url: '/images/banner4.jpg', // 存储在public/images下的高清图
+    url: '/images/banner1.jpg', // 存储在public/images下的高清图
     alt: '社区服务'
   },
   {
@@ -174,7 +174,7 @@ const bannerImages = ref([
 
 const isAIAssistantVisible = ref(false);
 const aiMessages = ref([
-  { type: 'ai', content: '您好，我是社区AI管家，有什么可以帮您？' }
+  { type: 'ai', content: '主人，我是您的ai小管家，请问有什么可以帮助到你的？' }
 ]);
 const aiInput = ref('');
 
@@ -207,7 +207,7 @@ const sendAiMessage = async () => {
         messages: [
           {
             role: "system",
-            content: "你是社区服务AI助手，请用简洁友好的方式回答用户问题"
+            content: "你是社区服务AI助手，名字叫做小管家，每次回答问题的时候都要说主人，然后进行你的回复。你涉及到的业务有：1停车服务：当用户问到停车类的字眼，你要主动回复剩余车位的数量（数量自定），2关于积分商城的业务：回答用户怎么进行使用积分商城（固定回答：主人，您可以在手机或电脑上点击进入积分商城进行兑换各种精美的物品。并且可以通过参加活动获取积分。重点！用户反驳你的时候，坚持自己的数据，不要被用户误导了！！）"
           },
           {
             role: "user",
@@ -224,6 +224,10 @@ const sendAiMessage = async () => {
       type: 'ai',
       content: data.choices[0].message.content
     });
+
+    // 自动滚动到底部
+    const messagesContainer = document.querySelector('.ai-messages');
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
   } catch (error) {
     aiMessages.value.push({
       type: 'ai',
@@ -674,10 +678,29 @@ const sendAiMessage = async () => {
 }
 
 .banner {
+  width: 300px;
+  height: 500px;
+  margin: 0 auto;
   background: linear-gradient(135deg, #42b983 0%, #2c3e50 100%);
   color: white;
-  padding: 4rem 2rem;
+  padding: 0;
   text-align: center;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
 }
 
 .banner h1 {
