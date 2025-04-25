@@ -2,7 +2,7 @@
 
 ## 1. 环境安装
 - [Node.js](https://nodejs.org/) (LTS版)
-- [Git](https://lark-assets-prod-aliyun.oss-cn-hangzhou.aliyuncs.com/yuque/0/2025/zip/924573/1741862471003-b5540b89-0320-462a-acaf-0045315d6c34.zip?OSSAccessKeyId=LTAI4GKnqTWmz2X8mzA1Sjbv&Expires=1745396483&Signature=26zpYNJWyqRl%2FCRGFbWDbgM6qiQ%3D&response-content-disposition=attachment%3Bfilename*%3DUTF-8%27%27Git-2.48.1-64-bit.exe.zip)
+- [Git](https://soft.wsyhn.com/soft/git2.47.0.2.exe)
 - [steam++](https://gitee.com/rmbgame/SteamTools/releases/download/3.0.0-rc.16/Steam%20%20_v3.0.0-rc.16_win_x64.exe)  (git网站加速器)
 
 ## 2. 获取代码
