@@ -267,6 +267,16 @@ import { ref } from 'vue';
   z-index: 1000;
 }
 
+/* 修改 main-nav 的样式，使其居中 */
+.main-nav {
+  display: flex;
+  gap: 2rem;
+  /* 新增以下样式 */
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
 .logo {
   font-size: 1.5rem;
   font-weight: 600;
