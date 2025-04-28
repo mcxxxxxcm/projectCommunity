@@ -7,6 +7,7 @@
 
 ## 2. 获取代码
 ```bash
+取消ssl验证：git config --global http.sslVerify false
 git clone https://github.com/mcxxxxxcm/projectCommunity.git
 cd projectCommunity
 ```
