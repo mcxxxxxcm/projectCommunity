@@ -36,7 +36,7 @@
       <section class="banner">
         <!-- 修改后的Banner区域 -->
         <!-- 修改banner高度 -->
-        <el-carousel :interval="3000" height="300px">
+        <el-carousel :interval="3000" height="400px">
           <el-carousel-item v-for="(image, index) in bannerImages" :key="index">
             <img :src="image.url" :alt="image.alt" class="banner-image">
             <div class="banner-text">
@@ -167,7 +167,7 @@ const bannerImages = ref([
     alt: '便民服务'
   },
   {
-    url: '/images/banner3.jpg', // 社区活动场景
+    url: '/images/banner4.jpg', // 社区活动场景
     alt: '社区活动'
   }
 ]);
@@ -461,16 +461,53 @@ const sendAiMessage = async () => {
 .main-content {
   margin-top: 80px;
 }
-/* 修改banner样式 */
+/* 修改后的 banner 样式 */
 .banner {
   margin-top: 0;
-  padding: 0 !important;
+  padding: 0;
   width: 90%;
-  height: auto; /* 改为自适应高度 */
-  border-radius: 10px;
+  max-width: 1400px; /* 添加最大宽度限制 */
+  height: 400px; /* 设置固定高度，可根据需求调整 */
+  border-radius: 15px; /* 增加圆角 */
   margin: 0 auto;
+  overflow: hidden; /* 隐藏溢出内容 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 添加阴影 */
 }
 
+.banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* 让图片覆盖整个容器 */
+  transition: transform 0.3s ease; /* 添加图片缩放过渡效果 */
+}
+
+.banner-image:hover {
+  transform: scale(1.05); /* 鼠标悬停时图片放大 */
+}
+
+.banner-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  background: rgba(0, 0, 0, 0); /* 修改背景透明度为 0，即完全透明 */
+  padding: 20px;
+  border-radius: 10px; /* 添加圆角 */
+  max-width: 80%; /* 限制文字区域宽度 */
+}
+
+.banner-text h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* 添加文字阴影 */
+}
+
+.banner-text p {
+  font-size: 1.2rem;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5); /* 添加文字阴影 */
+}
 
 /* AI管家样式 */
 .ai-assistant-container {
@@ -559,258 +596,6 @@ const sendAiMessage = async () => {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
-
-
-.pc-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background: #2c3e50;
-  color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.house-icon {
-  position: relative;
-  width: 40px;
-  height: 40px;
-}
-
-.roof {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-bottom: 15px solid #ff6b6b;
-}
-
-.wall {
-  position: absolute;
-  bottom: 0;
-  left: 5px;
-  width: 30px;
-  height: 25px;
-  background: #f8a5c2;
-  border-radius: 0 0 5px 5px;
-}
-
-.door {
-  position: absolute;
-  bottom: 0;
-  left: 10px;
-  width: 8px;
-  height: 12px;
-  background: #786fa6;
-  border-radius: 3px 3px 0 0;
-}
-
-.window {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  width: 8px;
-  height: 8px;
-  background: #f7f1e3;
-  border-radius: 2px;
-}
-
-.main-nav {
-  display: flex;
-  gap: 1.5rem;
-}
-
-.nav-item {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 0.5rem 1rem;
-  transition: all 0.3s ease;
-}
-
-.nav-item:hover {
-  color: #42b983;
-}
-
-.mobile-switch {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #42b983; /* 改为更显眼的绿色背景 */
-  border: none;
-  border-radius: 20px; /* 增加圆角 */
-  color: white;
-  cursor: pointer;
-  font-weight: bold; /* 加粗文字 */
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 添加阴影 */
-}
-
-.mobile-switch:hover {
-  background: #3aa876; /* 悬停时颜色变深 */
-  transform: translateY(-2px); /* 悬停时轻微上浮 */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* 悬停时阴影加深 */
-}
-
-.mobile-switch .icon {
-  font-size: 1.2rem; /* 增大图标 */
-}
-
-.banner {
-  width: 300px;
-  height: 500px;
-  margin: 0 auto;
-  background: linear-gradient(135deg, #42b983 0%, #2c3e50 100%);
-  color: white;
-  padding: 0;
-  text-align: center;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.banner-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.banner-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-}
-
-.banner h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.content-section {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.service-card {
-  background: white;
-  border-radius: 8px;
-  padding: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.service-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-}
-
-.service-icon {
-  font-size: 2.5rem;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-.footer {
-  background: #2c3e50;
-  color: white;
-  padding: 2rem;
-  text-align: center;
-  margin-top: auto;
-}
-
-.footer-links {
-  margin-top: 1rem;
-}
-
-.footer-links a {
-  color: #42b983;
-  margin: 0 1rem;
-  text-decoration: none;
-}
-
-.header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  transition: transform 0.3s ease;
-  z-index: 1000;
-}
-
-.header-hidden {
-  transform: translateY(-100%);
-}
-
-.back-to-top {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #42b983;
-  color: white;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  visibility: hidden;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  z-index: 999;
-}
-
-.back-to-top.show {
-  opacity: 1;
-  visibility: visible;
-}
-
-.back-to-top .icon {
-  font-size: 1.5rem;
-}
-
-/* 调整main-content的margin-top */
-.main-content {
-  margin-top: 80px;
-}
-/* 修改banner样式 */
-.banner {
-  margin-top: 0;
-  padding: 0 !important;
-  width: 90%;
-  height: auto; /* 改为自适应高度 */
-  border-radius: 10px;
-  margin: 0 auto;
 }
 
 </style>
