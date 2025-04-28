@@ -11,6 +11,14 @@ import ComplaintPC from '../views/Complaint-PC.vue'
 import LostAndFoundPC from '../views/LostAndFound-PC.vue'
 import PointsMallMobile from '../views/PointsMall-Mobile.vue'
 import ParkingPC from '../views/Parking-PC.vue'
+import ComplaintMobile from '../views/Complaint-Mobile.vue'
+import LostAndFoundMobile from '../views/LostAndFound-Mobile.vue'
+import ParkingMobile from '../views/Parking-Mobile.vue'
+import PrivacyMobile from '../views/Privacy-Mobile.vue'
+import ChildCareMobile from '../views/ChildCare-Mobile.vue'
+import UtilitiesMobile from '../views/Utilities-Mobile.vue'
+import CommunityNoticeMobile from '../views/CommunityNotice-Mobile.vue'
+import CommunityErrandsMobile from '../views/CommunityErrands-Mobile.vue'
 
 const routes = [
   {
@@ -92,6 +100,46 @@ const routes = [
     path: '/message-Mobile',
     name: 'messageMobile',
     component: () => import('../views/message-Mobile.vue')
+  },
+  {
+    path: '/Complaint-Mobile',
+    name: 'complaintMobile',
+    component: ComplaintMobile
+  },
+  {
+    path: '/LostAndFound-Mobile',
+    name: 'lostAndFoundMobile',
+    component: LostAndFoundMobile
+  },
+  {
+    path: '/Parking-Mobile',
+    name: 'parkingMobile',
+    component: ParkingMobile
+  },
+  {
+    path: '/Privacy-Mobile',
+    name: 'privacyMobile',
+    component: PrivacyMobile
+  },
+  {
+    path: '/ChildCare-Mobile',
+    name: 'childCareMobile',
+    component: ChildCareMobile
+  },
+  {
+    path: '/Utilities-Mobile',
+    name: 'utilitiesMobile',
+    component: UtilitiesMobile
+  },
+  {
+    path: '/CommunityNotice-Mobile',
+    name: 'communityNoticeMobile',
+    component: CommunityNoticeMobile
+  },
+  {
+    path: '/CommunityErrands-Mobile',
+    name: 'communityErrandsMobile',
+    component: CommunityErrandsMobile
   }
 ]
 
