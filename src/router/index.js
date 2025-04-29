@@ -19,6 +19,10 @@ import ChildCareMobile from '../views/ChildCare-Mobile.vue'
 import UtilitiesMobile from '../views/Utilities-Mobile.vue'
 import CommunityNoticeMobile from '../views/CommunityNotice-Mobile.vue'
 import CommunityErrandsMobile from '../views/CommunityErrands-Mobile.vue'
+import WaterBillPayment from '../views/WaterBillPayment.vue';
+import ElectricityBillPayment from '../views/ElectricityBillPayment.vue';
+import GasBillPayment from '../views/GasBillPayment.vue';
+import BillingHistory from '../views/BillingHistory.vue'
 
 const routes = [
   {
@@ -140,7 +144,69 @@ const routes = [
     path: '/CommunityErrands-Mobile',
     name: 'communityErrandsMobile',
     component: CommunityErrandsMobile
-  }
+  },
+  {
+    path: '/water-bill-payment',
+    name: 'WaterBillPayment',
+    component: WaterBillPayment
+  },
+  {
+    path: '/electricity-bill-payment',
+    name: 'ElectricityBillPayment',
+    component: ElectricityBillPayment
+  },
+  {
+    path: '/gas-bill-payment',
+    name: 'GasBillPayment',
+    component: GasBillPayment
+  },
+  {
+    path: '/billing-history',
+    name: 'BillingHistory',
+    component: BillingHistory
+  },
+  {
+    path: '/electricity-analysis',
+    component: () => import('../views/ElectricityAnalysis.vue')
+  },
+  {
+    path: '/safety-guide',
+    component: () => import('../views/SafetyGuide.vue')
+  },
+  {
+    path: '/Utilities-Mobile',
+    component: () => import('../views/Utilities-Mobile.vue')
+  },
+  {
+    path: '/water-bill-payment-mobile',
+    component: () => import('../views/WaterBillPaymentMobile.vue')
+  },
+  {
+    path: '/billing-history-mobile',
+    component: () => import('../views/BillingHistoryMobile.vue')
+  },
+  {
+    path: '/electricity-bill-payment-mobile',
+    component: () => import('../views/ElectricityBillPaymentMobile.vue')
+  },
+  {
+    path: '/gas-bill-payment-mobile',
+    component: () => import('../views/GasBillPaymentMobile.vue')
+  },
+  // ... existing code ...
+{
+  path: '/electricity-analysismobile',
+  component: () => import('../views/ElectricityAnalysisMobile.vue')
+},
+ // ... existing code ...
+{
+  path: '/safety-guidemobile',
+  component: () => import('../views/SafetyGuideMobile.vue')
+},
+{
+  path: '/electricity-analysis',
+  component: () => import('../views/ElectricityAnalysis.vue')
+},
 ]
 
 const router = createRouter({
