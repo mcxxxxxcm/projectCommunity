@@ -5,6 +5,11 @@
       <span class="icon">⬅️</span>
       <span>返回首页</span>
     </button>
+    <!-- 添加微信支付按钮 -->
+    <button class="nav-button" @click="goToWechatPayment">
+      <span class="icon">💴</span>
+      <span>微信支付</span>
+    </button>
   </div>
 </template>
 
@@ -15,6 +20,11 @@ const router = useRouter();
 
 const goToPage = (path) => {
   router.push(path);
+};
+
+// 添加跳转微信支付页面的方法
+const goToWechatPayment = () => {
+  router.push('/wechat-payment-page');
 };
 </script>
 
@@ -59,5 +69,29 @@ const goToPage = (path) => {
 
 .icon {
   font-size: 1.5rem;
+}
+
+/* 添加微信支付按钮样式 */
+.wechat-pay-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+  background: #07c160;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  font-size: 1.1rem;
+}
+
+.wechat-pay-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.1);
+  background: #06a753;
 }
 </style>

@@ -19,6 +19,7 @@ import ChildCareMobile from '../views/ChildCare-Mobile.vue'
 import UtilitiesMobile from '../views/Utilities-Mobile.vue'
 import CommunityNoticeMobile from '../views/CommunityNotice-Mobile.vue'
 import CommunityErrandsMobile from '../views/CommunityErrands-Mobile.vue'
+import WechatPaymentPage from '../views/wechat-payment-page.vue';
 
 const routes = [
   {
@@ -140,6 +141,11 @@ const routes = [
     path: '/CommunityErrands-Mobile',
     name: 'communityErrandsMobile',
     component: CommunityErrandsMobile
+  },
+  {
+    path: '/wechat-payment-page',
+    name: 'WechatPaymentPage',
+    component: WechatPaymentPage
   }
 ]
 
