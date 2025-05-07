@@ -2,8 +2,10 @@ package com.springboot.userserver.user.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.springboot.userserver.common.result.Result;
 import com.springboot.userserver.user.dto.LoginUser;
+import com.springboot.userserver.user.dto.QueryUser;
 import com.springboot.userserver.user.entity.User;
 import com.springboot.userserver.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.View;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -36,7 +40,7 @@ public class UserController {
     @PostMapping("/login")
     //RequestBody注解：只解析json数据格式，将json转换为对象，只在POST请求下使用
     public Result<?> login(@RequestBody LoginUser loginUser) {
-        // 把接受的参数转发给service处理
+        // 把接收的参数转发给service处理
         User user = userService.login(loginUser);
 
         // 把处理结果返回给前端
@@ -49,5 +53,22 @@ public class UserController {
 //            obj.put("msg", "登录成功");
             return new Result<>().success("登陆成功");
         }
+    }
+
+    /**
+     * get请求方法的参数不需要添加@RequestBody的注解
+     * @param queryUser
+     * @return
+     */
+    @GetMapping("/page")
+    public Result<?> pageUser(QueryUser queryUser) {
+        // 把参数转发给service处理
+        Page<User> userPage = userService.pageUser(queryUser);
+        // 把处理结果返回给前端
+        Map<String, Object> map = new HashMap<>();
+        map.put("total", userPage.getTotal());
+        map.put("rows", userPage.getRecords());
+
+        return new Result<>().success().put(map);
     }
 }
