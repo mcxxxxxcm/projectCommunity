@@ -10,6 +10,19 @@
 	</head>
 	<body>
 		<div id="userApp">
+			<!-- 条件查询 -->
+			<el-form :inline="true">
+				<el-form-item>
+					<el-input v-model="username" placeholder="用户名"></el-input>
+				</el-form-item>
+				<el-form-item>
+					<el-button type="primary" @click="getUserList()">查询</el-button>
+				</el-form-item>
+
+				<el-form-item>
+					<el-button type="primary" @click="showAddUser">添加用户</el-button>
+				</el-form-item>
+			</el-form>
 			<!-- 表格 -->
 			<template>
 				<el-table :data="userList" border style="width: 100%">
@@ -40,6 +53,35 @@
 				:current-page="pageNumber" :page-sizes="[5, 10, 20, 50]" :page-size="pageSize"
 				layout="total, sizes, prev, pager, next, jumper" :total="total">
 			</el-pagination>
+
+			<!-- 添加用户对话框 -->
+			<el-dialog title="添加用户" :visible.sync="addUserVisible">
+				<!-- addUser是对象，输入框中v-model绑定的变量都是user对象的字段名 -->
+				<el-form :model="addUser">
+					<el-form-item label="用户名" :label-width="formLabelWidth">
+						<el-input v-model="addUser.username" autocomplete="off"></el-input>
+					</el-form-item>
+					<el-form-item label="密码" :label-width="formLabelWidth">
+						<el-input v-model="addUser.password" autocomplete="off" show-password></el-input>
+					</el-form-item>
+					<el-form-item label="性别" :label-width="formLabelWidth">
+						<el-select v-model="addUser.sex" placeholder="请选择性别">
+							<el-option label="男" value="男"></el-option>
+							<el-option label="女" value="女"></el-option>
+						</el-select>
+					</el-form-item>
+					<el-form-item label="年龄" :label-width="formLabelWidth">
+						<el-input v-model="addUser.age"></el-input>
+					</el-form-item>
+					<el-form-item label="住址" :label-width="formLabelWidth">
+						<el-input v-model="addUser.address"></el-input>
+					</el-form-item>
+				</el-form>
+				<div slot="footer" class="dialog-footer">
+					<el-button @click="cancelAddUser">取 消</el-button>
+					<el-button type="primary" @click="submitAddUser">确 定</el-button>
+				</div>
+			</el-dialog>
 		</div>
 	</body>
 
@@ -48,35 +90,74 @@
 			el: "#userApp",
 			data() {
 				return {
-					userList: [],
+					userList: [], // 表格中的变量，使用数组的数据结构用于把后台发送的数据存储并展现出来
 					pageNumber: 1,
 					pageSize: 5,
-					total: 0
+					total: 0,
+					username: '',
+					addUserVisible: false,
+					addUser: {},
+					formLabelWidth: '80px',
 				}
 			},
 			methods: {
 				handleCurrentChange(val) {
-
+					// 把新页码赋值给this.pageNumber
+					this.pageNumber = val;
+					// 把新的pageNumber传给后端重新进行查询，调用getUserList()重新查询
+					this.getUserList();
 				},
 				handleSizeChange(val) {
-
+					this.pageSize = val;
+					this.getUserList();
 				},
 				getUserList() {
-					//获取pageNumber和pageSize，封装成对象p
+					// 获取pageNumber和pageSize，封装成对象p
 					let p = {};
+					// 这两个变量都是由前端拿到的，需要把这两个变量传送到后台进行处理
 					p.pageNumber = this.pageNumber;
 					p.pageSize = this.pageSize;
-					//axios发送请求，处理结果，发送get请求有格式
+
+					// 如果筛选条件username不为空，则将该条件封装到参数对象里
+					// 后端UserSerbiceImpl实现了按名查询的逻辑
+					if (this.username != '') {
+						p.username = this.username;
+					}
+
+					// axios发送请求，处理结果，发送get请求有格式
 					axios.get('http://localhost:8088/user/page', {
 							params: p
 						})
 						.then(result => {
 							let data = result.data;
 							console.log(data);
-							this.total = data.data.total;
-							this.userList = data.data.rows;
+							this.total = data.data
+								.total; // 查询的总条数，因为我们对象名叫data，然后前端向后台发送请求，后台回复的对象Object中的data包含我们需要的数据，所以就是data.data.
+							this.userList = data.data.rows; // pageSize
+						})
+				},
+				showAddUser() {
+					// 打开添加用户的对话框
+					this.addUserVisible = true;
+				},
+				cancelAddUser() {
+					// 关闭对话框
+					this.addUserVisible = false;
+				},
+				submitAddUser() {
+					// 向后台服务发送请求，将用户填写的addUser对象发送给后台进行数据库操作
+					axios.post('http://localhost:8088/user/add', this.addUser)
+						.then(result => {
+							let data = result.data;
+							if (data.code == 200) {
+								this.$message.success(data.msg);
+								this.addUserVisible = false;
+							} else {
+								this.$message.warning(data.msg);
+							}
 						})
 				}
+
 			},
 			// 当页面加载完毕之后，自动触发的事件
 			mounted() {

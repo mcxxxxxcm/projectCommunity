@@ -71,4 +71,20 @@ public class UserController {
 
         return new Result<>().success().put(map);
     }
+
+    /**
+     * 按照开发规范，不允许使用Entity实体类进行接收前端的参数
+     * 这里使用实体类，简化开发流程，但是不符合开发规范
+     * @return
+     */
+    @PostMapping("/add")
+    public Result<?> addUser(@RequestBody User user) {
+        // save方法是mybatis-plus提供的
+        boolean result = userService.save(user);
+        if (result) {
+            return new Result<>().success();
+        } else {
+            return new Result<>().error();
+        }
+    }
 }
