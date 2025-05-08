@@ -87,4 +87,25 @@ public class UserController {
             return new Result<>().error();
         }
     }
+
+    @PostMapping("/update")
+    public Result<?> updateUser(@RequestBody User user) {
+        // update方法也是mybatis-plus提供的
+        boolean result = userService.updateById(user);
+        if(result) {
+            return new Result<>().success();
+        } else {
+            return new Result<>().error();
+        }
+    }
+
+    @GetMapping("/delete")
+    public Result<?> deleteUser(Integer id) {
+        boolean result = userService.removeById(id);
+        if(result) {
+            return new Result<>().success();
+        } else {
+            return new Result<>().error();
+        }
+    }
 }
