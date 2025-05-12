@@ -20,6 +20,8 @@ import UtilitiesMobile from '../views/Utilities-Mobile.vue'
 import CommunityNoticeMobile from '../views/CommunityNotice-Mobile.vue'
 import CommunityErrandsMobile from '../views/CommunityErrands-Mobile.vue'
 import WechatPaymentPage from '../views/wechat-payment-page.vue';
+import FoundItem from '../views/FoundItem.vue';
+import LostAndFound from '../views/LostAndFound.vue';
 
 const routes = [
   {
@@ -146,7 +148,22 @@ const routes = [
     path: '/wechat-payment-page',
     name: 'WechatPaymentPage',
     component: WechatPaymentPage
-  }
+  },
+  {
+    path: '/lostandfound',
+    name: 'LostAndFound',
+    component: LostAndFound
+  },
+  {
+    path: '/foundItem',
+    name: 'FoundItem',
+    component: FoundItem
+  },
+  {
+    path: '/lostAndFound',
+    name: 'LostAndFound',
+    component: LostAndFound
+  },
 ]
 
 const router = createRouter({
