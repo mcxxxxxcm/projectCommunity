@@ -155,12 +155,12 @@ const routes = [
     component: LostAndFound
   },
   {
-    path: '/foundItem',
+    path: '/foundItem', // 寻物启事路由
     name: 'FoundItem',
-    component: FoundItem
+    component: LostAndFoundPC
   },
   {
-    path: '/lostAndFound',
+    path: '/lostandfound',
     name: 'LostAndFound',
     component: LostAndFound
   },
