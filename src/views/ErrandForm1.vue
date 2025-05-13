@@ -10,67 +10,88 @@
       </div>
     </div>
     <div class="app-header">
-      <button class="back-btn" @click="goToPage('/MobilePage')">←</button>
-      <h1 class="app-title">社区跑腿</h1>
+      <button class="back-btn" @click="goToPage('/CommunityErrands-Mobile')">←</button>
+      <h1 class="app-title">{{ serviceType }}服务表单</h1>
     </div>
-    <!-- 服务选择区域 -->
     <main class="mobile-main">
-      <div class="service-prompt">请选择需要的服务</div>
-      <div class="service-grid">
-        <button 
-          class="service-button" 
-          v-for="service in services" 
-          :key="service.type"
-          @click="handleErrand(service.type)"
-        >
-          <span class="service-icon">{{ service.icon }}</span>
-          <span class="service-name">{{ service.name }}</span>
-        </button>
-      </div>
+      <form @submit.prevent="submitForm" class="errand-form">
+        <!-- 快递服务 -->
+        <div v-if="serviceType === '快递'" class="input-group">
+          <label for="pickupCode">请输入取件码:</label>
+          <input type="text" id="pickupCode" v-model="pickupCode" required>
+        </div>
+        <!-- 代购服务 -->
+        <div v-if="serviceType === '代购'" class="input-group">
+          <label for="productName">请输入商品名称:</label>
+          <input type="text" id="productName" v-model="productName" required>
+        </div>
+        <!-- 送餐服务 -->
+        <div v-if="serviceType === '送餐'" class="input-group">
+          <label for="mealName">请输入餐品名称:</label>
+          <input type="text" id="mealName" v-model="mealName" required>
+        </div>
+        <!-- 其他服务 -->
+        <div v-if="serviceType === '其他'" class="input-group">
+          <label for="description">请输入需要的服务:</label>
+          <input type="text" id="description" v-model="description" required>
+        </div>
+        <!-- 所有服务共用的地址字段 -->
+        <div class="input-group">
+          <label for="address">请输入详细地址:</label>
+          <input type="text" id="address" v-model="address" required>
+        </div>
+        <button type="submit" class="service-button">确认</button>
+      </form>
     </main>
-    <div class="bottom-nav">
-      <div class="nav-item" @click="goToHome">
-        <span class="nav-icon">🏠</span>
-        <span class="nav-text">首页</span>
-      </div>
-      <div class="nav-item" @click="goToPage('/message-Mobile')">
-        <span class="nav-icon">💬</span>
-        <span class="nav-text">消息</span>
-      </div>
-      <div class="nav-item" @click="goToMine">
-        <span class="nav-icon">👤</span>
-        <span class="nav-text">我的</span>
-      </div>
-    </div>
   </div>
 </template>
 
 <script setup>
+import { ref, defineProps } from 'vue';
 import { useRouter } from 'vue-router';
+import { onMounted, onUnmounted } from 'vue';
 
 const router = useRouter();
-const goToHome = () => {
-  router.push('/MobilePage');
-};
+const props = defineProps(['serviceType']);
+
+// 跳转页面
 const goToPage = (path) => {
   router.push(path);
 };
-const goToMine = () => {
-  router.push('/mine-Mobile');
+
+const pickupCode = ref('');
+const productName = ref('');
+const mealName = ref('');
+const description = ref('');
+const address = ref('');
+
+const submitForm = () => {
+  const formData = {
+    serviceType: props.serviceType,
+    pickupCode: pickupCode.value,
+    productName: productName.value,
+    mealName: mealName.value,
+    description: description.value,
+    address: address.value
+  };
+  
+  // console.log('提交的表单数据:', formData);
+  // alert('已提交，请耐心等待哦！！！');
+  goToPage('/CommunityErrands-Mobile'); 
 };
 
-// 服务列表
-const services = [
-  { type: '代购', name: '代购', icon: '🛍️' },
-  { type: '快递', name: '快递', icon: '📦' },
-  { type: '送餐', name: '送餐', icon: '🍔' },
-  { type: '其他', name: '其他', icon: '🧰' }
-];
-
-// 处理跑腿功能
-const handleErrand = (type) => {
-  router.push({ name: 'ErrandForm1', params: { serviceType: type } });
+// 时间更新函数
+const currentTime = ref('');
+const updateTime = () => {
+  const now = new Date();
+  currentTime.value = now.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
 };
+
+onMounted(() => {
+  updateTime();
+  const interval = setInterval(updateTime, 1000);
+  return () => clearInterval(interval);
+});
 </script>
 
 <style scoped>
@@ -95,7 +116,6 @@ const handleErrand = (type) => {
   display: flex;
   flex-direction: column;
 }
-/* 顶部导航栏统一风格 */
 .app-header {
   padding: 12px 16px;
   background: #42b983;
@@ -152,12 +172,7 @@ const handleErrand = (type) => {
 
 /* 服务选择区域 */
 .mobile-main {
-  display: flex;
-  flex-direction: column;
-  justify-content: center; 
-  align-items: center;
-  padding: 1rem; 
-  flex-grow: 1; 
+  padding: 6rem 1rem 1rem;
 }
 
 .service-prompt {
@@ -173,7 +188,14 @@ const handleErrand = (type) => {
   gap: 1rem;
 }
 
+.errand-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .service-button {
+  width: auto; 
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -203,43 +225,23 @@ const handleErrand = (type) => {
 .service-name {
   font-size: 1.1rem;
 }
-.bottom-nav {
-  position: sticky;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  justify-content: space-around;
-  padding-top: 50px; 
-  padding-bottom: 10px;
-  background: rgba(255, 255, 255, 0.9);
-  border-top: 1px solid #e0e0e0;
-  backdrop-filter: blur(10px);
-  z-index: 100;
+
+
+.input-group {
+  margin-bottom: 1rem;
+  width: 100%;
 }
 
-/* 添加悬停浮动效果 */
-.nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: all 0.3s ease;
-}
-
-.nav-icon {
-
-  font-size: 1.5rem; 
-  margin-bottom: 0.2rem;
-}
-
-.service-icon {
-
-  font-size: 3rem; 
+.input-group label {
+  display: block;
   margin-bottom: 0.5rem;
 }
-.nav-item:hover {
-  transform: scale(1.05);
-  color: #42b983;
+
+.input-group input {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 .status-bar {
   display: flex;
@@ -252,4 +254,5 @@ const handleErrand = (type) => {
   display: flex;
   gap: 8px;
 }
+
 </style>

@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
+
+// 静态导入的组件
 import HomeView from '../views/HomeView.vue'
 import MobilePage from '../views/MobilePage.vue'
 import PCPage from '../views/PCPage.vue'
@@ -11,6 +13,9 @@ import ComplaintPC from '../views/Complaint-PC.vue'
 import LostAndFoundPC from '../views/LostAndFound-PC.vue'
 import PointsMallMobile from '../views/PointsMall-Mobile.vue'
 import ParkingPC from '../views/Parking-PC.vue'
+import ErrandForm from '../views/ErrandForm.vue'
+import CommunityErrandsMobile from '../views/CommunityErrands-Mobile.vue'
+import ErrandForm1 from '../views/ErrandForm1.vue'
 import WaterBillPayment from '../views/WaterBillPayment.vue'
 import ElectricityBillPayment from '../views/ElectricityBillPayment.vue'
 import GasBillPayment from '../views/GasBillPayment.vue'
@@ -22,29 +27,52 @@ import PrivacyMobile from '../views/Privacy-Mobile.vue'
 import ChildCareMobile from '../views/ChildCare-Mobile.vue'
 import UtilitiesMobile from '../views/Utilities-Mobile.vue'
 import CommunityNoticeMobile from '../views/CommunityNotice-Mobile.vue'
-import CommunityErrandsMobile from '../views/CommunityErrands-Mobile.vue'
 import WechatPaymentPage from '../views/wechat-payment-page.vue'
 import LostAndFound from '../views/LostAndFound.vue'
 
 const routes = [
+  // 基础路由
   {
     path: '/',
     name: 'home',
     component: HomeView
   },
-  // 移动端基础页面
   {
     path: '/MobilePage',
     name: 'mobile',
     component: MobilePage
   },
-  // PC端基础页面
   {
     path: '/PCPage',
     name: 'pc',
     component: PCPage
   },
-  // 积分商城（PC/移动端）
+
+  // 社区服务相关
+  {
+    path: '/errand-form/:serviceType',
+    name: 'errandForm',
+    component: ErrandForm,
+    props: true
+  },
+  {
+    path: '/ErrandForm1/:serviceType',
+    name: 'ErrandForm1',
+    component: ErrandForm1,
+    props: true
+  },
+  {
+    path: '/CommunityErrands-Mobile',
+    name: 'communityErrandsMobile',
+    component: CommunityErrandsMobile
+  },
+  {
+    path: '/CommunityErrands-PC',
+    name: 'communityErrandsPC',
+    component: CommunityErrandsPC
+  },
+
+  // 积分商城
   {
     path: '/PointsMall-PC',
     name: 'pointsMallPC',
@@ -55,7 +83,8 @@ const routes = [
     name: 'pointsMallMobile',
     component: PointsMallMobile
   },
-  // 儿童看护（PC/移动端）
+
+  // 儿童看护
   {
     path: '/ChildCare-PC',
     name: 'childCarePC',
@@ -66,7 +95,8 @@ const routes = [
     name: 'childCareMobile',
     component: ChildCareMobile
   },
-  // 公用事业（PC/移动端）
+
+  // 公用事业
   {
     path: '/Utilities-PC',
     name: 'utilitiesPC',
@@ -77,7 +107,8 @@ const routes = [
     name: 'utilitiesMobile',
     component: UtilitiesMobile
   },
-  // 账单支付相关
+
+  // 账单支付
   {
     path: '/water-bill-payment',
     name: 'WaterBillPayment',
@@ -98,18 +129,8 @@ const routes = [
     name: 'BillingHistory',
     component: BillingHistory
   },
-  // 社区服务（PC/移动端）
-  {
-    path: '/CommunityErrands-PC',
-    name: 'communityErrandsPC',
-    component: CommunityErrandsPC
-  },
-  {
-    path: '/CommunityErrands-Mobile',
-    name: 'communityErrandsMobile',
-    component: CommunityErrandsMobile
-  },
-  // 隐私与投诉（PC/移动端）
+
+  // 隐私与投诉
   {
     path: '/Privacy-PC',
     name: 'privacyPC',
@@ -130,7 +151,13 @@ const routes = [
     name: 'complaintMobile',
     component: ComplaintMobile
   },
-  // 失物招领（PC/移动端）
+  {
+    path: '/complaint-processing',     // 新增路由
+    name: 'ComplaintProcessing',
+    component: () => import('../views/ComplaintProcessing.vue')
+  },
+
+  // 失物招领
   {
     path: '/LostAndFound-PC',
     name: 'lostAndFoundPC',
@@ -146,6 +173,7 @@ const routes = [
     name: 'LostAndFound',
     component: LostAndFound
   },
+
   // 个人中心
   {
     path: '/mine',
@@ -157,7 +185,8 @@ const routes = [
     name: 'mine-Mobile',
     component: () => import('../views/mine-Mobile.vue')
   },
-  // 停车服务（PC/移动端）
+
+  // 停车服务
   {
     path: '/Parking-PC',
     name: 'parkingPC',
@@ -168,7 +197,8 @@ const routes = [
     name: 'parkingMobile',
     component: ParkingMobile
   },
-  // 社区通知（PC/移动端）
+
+  // 社区通知
   {
     path: '/CommunityNotice-PC',
     name: 'CommunityNoticePC',
@@ -179,18 +209,21 @@ const routes = [
     name: 'communityNoticeMobile',
     component: CommunityNoticeMobile
   },
+
   // 消息中心
   {
     path: '/message-Mobile',
     name: 'messageMobile',
     component: () => import('../views/message-Mobile.vue')
   },
+
   // 支付相关
   {
     path: '/wechat-payment-page',
     name: 'WechatPaymentPage',
     component: WechatPaymentPage
   },
+
   // 能耗分析
   {
     path: '/electricity-analysis',
@@ -200,6 +233,7 @@ const routes = [
     path: '/electricity-analysismobile',
     component: () => import('../views/ElectricityAnalysisMobile.vue')
   },
+
   // 安全指南
   {
     path: '/safety-guide',
@@ -209,7 +243,8 @@ const routes = [
     path: '/safety-guidemobile',
     component: () => import('../views/SafetyGuideMobile.vue')
   },
-  // 移动端账单支付
+
+  // 移动支付
   {
     path: '/water-bill-payment-mobile',
     component: () => import('../views/WaterBillPaymentMobile.vue')
