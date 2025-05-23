@@ -5,7 +5,7 @@
       <h1 class="title">社区服务平台</h1>
       
       <!-- 登录表单 -->
-      <div class="login-form" v-if="!isLoggedIn">
+      <div class="login-form">
         <div class="form-group">
           <label for="username">用户名</label>
           <input
@@ -28,12 +28,12 @@
       </div>
 
       <!-- 登录后的导航按钮 -->
-      <div class="nav-buttons" v-else>
+      <!-- <div class="nav-buttons">
         <button class="nav-button" @click="goToPage('pc')">
           <span class="icon">💻</span>
           <span>进入PC端首页</span>
         </button>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -42,19 +42,31 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import axios from 'axios'
+import { ElMessageBox, ElMessage } from 'element-plus'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const username = ref('')
 const password = ref('')
+const isLoggedIn = ref(false)
 
 const handleLogin = () => {
-  if (username.value && password.value) {
-    authStore.login(username.value)
-    router.push('/PCPage')
-  } else {
-    alert('请输入用户名和密码')
-  }
+  let p={}
+  p.username=username.value
+  p.password=password.value
+  axios.post('http://localhost:8088/user/login', p).then(response => {
+    if (response.data.code === 200) {
+      isLoggedIn.value = true
+      authStore.login(response.data.data)
+      router.push('/pcpage')
+    } else {
+      ElMessageBox.alert('账号或密码错误', '提示', {
+      confirmButtonText: '错误',
+      type: 'warning'
+    });
+    }
+  })
 }
 
 const goToPage = (type) => {
